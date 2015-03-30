@@ -183,18 +183,36 @@ namespace MonoDrone {
 	
 		/*
 		 * <summary>
-		 * Makes the drone strafe left or right, that depends on the sign of the number.
+		 * Makes the drone strafe left or right, that depends on the sign of the number and the number can only be from -1 to 1.
 		 * (positive - left, negative - right)
 		 * </summary>
 		*/
 		public void Strafe (double amount) {
-			Status.TiltLR = amount;
-			Status.Flags = 1;
+
+			try {
+
+				if (amount >= -1 && amount <= 1) {
+
+					Status.TiltLR = amount;
+					Status.Flags = 1;
+
+				} else {
+
+					throw new CommandOutOfBounds();
+
+				}
+
+			} catch (Exception err) {
+
+				Console.Error.WriteLine("{0} Argument cannot be over 1 or lower than -1.", err);
+
+			}
+
 		}
 
 		/*
 		 * <summary> 
-		 * Makes the drone turn left or right, also dictated by the sign of the number.
+		 * Makes the drone turn left or right, cannot be over 1 or less than -1 and is dictated by the sign of the number.
 		 * (positive - left, negative - right)
 		 * </summary>
 		 * 
@@ -203,8 +221,26 @@ namespace MonoDrone {
 		 * </suggestion>
 		*/
 		public void Turn (double amount) {
-			Status.Ang = amount;
-			Status.Flags = 1;
+
+			try {
+
+				if (amount >= -1 && amount <= 1) {
+
+					Status.Ang = amount;
+					Status.Flags = 1;
+
+				} else {
+
+					throw new CommandOutOfBounds();
+
+				}
+
+			} catch (Exception err) {
+
+				Console.Error.WriteLine("{0} Argument cannot be over 1 or lower than -1.", err);
+
+			}
+				
 		}
 
 		/*
@@ -283,15 +319,14 @@ namespace MonoDrone {
 
 			if (Status.Flying == true) {
 
-				Move (Status.Flags, Status.TiltLR, Status.TiltFB, Status.Vert, Status.Ang); 
+				Move (Status.Flags, Status.TiltLR, Status.TiltFB, Status.Vert, Status.Ang);
+				Status.Reset ();
 
 			} else {
 
 				Console.Error.WriteLine ("MonoDrone Warning - Drone must be flying first!");
 
 			}
-				
-			Status.Reset ();
 
 		}
 
@@ -330,15 +365,21 @@ namespace MonoDrone {
 
 			string state = "";
 
-			if (Altitude == true) 
-				state = state + String.Format ("Altitude: {0}\r", Status.LastAlt);
-			if (Battery == true)
-				state = state + String.Format ("Battery left: {0}%\r", Status.Battery);
-			if (Flying == true)
-				state = state + String.Format ("Flying: {0}\r", Status.Flying);
+			if (Altitude == true) {
+				state += String.Format ("Altitude: {0} ", Status.LastAlt);
+			}
+
+			if (Battery == true) {
+				state += String.Format ("Battery left: {0}% ", Status.Battery);
+			}
+
+			if (Flying == true) {
+				state += String.Format ("Flying: {0} ", Status.Flying);
+			}
+
 			if (Command == true) {
-				state = state + String.Format (
-					"Next Command: {0}, {1}, {2}, {3}, {4}\r",
+				state += String.Format (
+					"Next Command: {0}, {1}, {2}, {3}, {4}",
 					Status.Flags,
 					Status.TiltFB,
 					Status.TiltLR,
