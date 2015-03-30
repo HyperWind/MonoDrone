@@ -366,20 +366,20 @@ namespace MonoDrone {
 			string state = "";
 
 			if (Altitude == true) {
-				state += String.Format ("Altitude: {0} ", Status.LastAlt);
+				state += String.Format ("{0} ", Status.LastAlt);
 			}
 
 			if (Battery == true) {
-				state += String.Format ("Battery left: {0}% ", Status.Battery);
+				state += String.Format ("{0} ", Status.Battery);
 			}
 
 			if (Flying == true) {
-				state += String.Format ("Flying: {0} ", Status.Flying);
+				state += String.Format ("{0} ", Status.Flying);
 			}
 
 			if (Command == true) {
 				state += String.Format (
-					"Next Command: {0}, {1}, {2}, {3}, {4}",
+					"{0} {1} {2} {3} {4}",
 					Status.Flags,
 					Status.TiltFB,
 					Status.TiltLR,
